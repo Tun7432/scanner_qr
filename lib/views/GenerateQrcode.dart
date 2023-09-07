@@ -13,6 +13,7 @@ class _GenerateQrcodeState extends State<GenerateQrcode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Generate QR Code")),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -20,23 +21,29 @@ class _GenerateQrcodeState extends State<GenerateQrcode> {
             Center(
               child: Column(
                 children: [
+                  Icon(
+                    Icons.qr_code_scanner,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     "Generate QRCode",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   Container(
                     child: QrImageView(
                       data: data,
                       backgroundColor: Colors.white,
-                      size: 300,
+                      size: 220,
                     ),
                   ),
                   Container(
                     width: 300,
-                    margin: EdgeInsets.only(top: 30),
+                    margin: EdgeInsets.only(top: 20),
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -49,10 +56,6 @@ class _GenerateQrcodeState extends State<GenerateQrcode> {
                   SizedBox(
                     height: 30,
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text("สร้าง QRCode"),
-                  )
                 ],
               ),
             )

@@ -16,9 +16,23 @@ class IndexPage extends StatelessWidget {
             Center(
                 child: Column(
               children: [
+                Icon(
+                  Icons.qr_code,
+                  size: 100,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
-                  "QrCode",
-                  style: TextStyle(fontSize: 40),
+                  "Scan & Generate",
+                  style: TextStyle(fontSize: 20, fontFamily: 'NotoSansThai'),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "QR Code",
+                  style: TextStyle(fontSize: 20),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
@@ -31,26 +45,35 @@ class IndexPage extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => GenerateQrcode()));
                         },
-                        child: Text("Gernerate QRcode"),
+                        child: Text("Gernerate QR Code"),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: FilledButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => QRCodeReaderPage()));
-                          },
-                          child: Text("Scan QRcode"),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 8.0),
+                      //   child: FilledButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => QRCodeReaderPage()));
+                      //     },
+                      //     child: Text("Scan QR Code"),
+                      //   ),
+                      // ),
                     ],
                   ),
                 )
               ],
             ))
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => QRCodeReaderPage()));
+        },
+        label: Icon(
+          Icons.qr_code_scanner,
         ),
       ),
     );

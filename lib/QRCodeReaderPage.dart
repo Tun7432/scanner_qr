@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -30,49 +29,67 @@ class _QRCodeReaderPageState extends State<QRCodeReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Expanded(
-          flex: 2,
-          child: Container(
-            margin: EdgeInsets.only(
-              top: 60,
-              left: 20,
-              right: 20,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromARGB(255, 12, 12, 12),
-                width: 1,
-              ),
-            ),
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                borderColor: Colors.red,
-                borderRadius: 20,
-                borderLength: 50,
-                borderWidth: 10,
-                cutOutSize: 300,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: (result != null)
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Data : ${result!.code}'),
-                      SizedBox(height: 20),
-                      Text('Decoded Data : ${decodeData(result!.code!)}'),
+      appBar: AppBar(
+        title: Text("QR Code Scanner"),
+        backgroundColor: Colors.blue, // สีพื้นหลังของแถบ
+      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 5,
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // สีพื้นหลังของตัวกล่อง
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // สีเงา
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // ตำแหน่งเงา
+                      ),
                     ],
-                  )
-                : Text("Scan a code"),
-          ),
-        ),
-      ]),
+                  ),
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: onQRViewCreated,
+                    overlay: QrScannerOverlayShape(
+                      borderColor: Color.fromARGB(255, 255, 0, 0),
+                      borderRadius: 20,
+                      borderLength: 50,
+                      borderWidth: 5,
+                      cutOutSize: 300,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Container(
+                  width: 200,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Scanning",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ]),
     );
   }
 
@@ -82,13 +99,34 @@ class _QRCodeReaderPageState extends State<QRCodeReaderPage> {
     return decodedLevel2;
   }
 
+  // bool isDialogShown = false;
+
   void onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        // input = result!.code!;
         decodedResult = decodeData(result!.code!);
+        // if (!isDialogShown && decodedResult.isNotEmpty) {
+        //   isDialogShown = true;
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("QR Code Scan Result"),
+              content: Text("Input: ${result!.code!}\nOutput: $decodedResult"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+        // }
       });
     });
   }
